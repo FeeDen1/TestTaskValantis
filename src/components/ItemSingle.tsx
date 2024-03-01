@@ -10,12 +10,18 @@ interface SingleItemProps {
 
 const ItemSingle:FC<SingleItemProps> = ({item, index}) => {
     return (
-        <div style={{display: "flex"}}>
-            <p>{index}</p>
-            <p>{item.id}</p>
-            <h1>{item.product}</h1>
-            <p>{item.brand}</p>
-            <p>{item.price}</p>
+        <div style={{display: "flex", border: '1px solid green', justifyContent:'space-between', alignItems:'center', gap:'20'}}>
+            <div style={{display:'flex', alignItems: 'center', gap: 10}}>
+                <h2>{index}.</h2>
+                <h2>{item.id}:</h2>
+                <h2>{item.product}</h2>
+
+            </div>
+            <div style={{display: 'flex', gap:20}}>
+                {item.brand && <h2>Brand:{item.brand}</h2>}
+                <h2 style={{marginRight: '20px'}}>{item.price}</h2>
+            </div>
+
         </div>
     );
 };

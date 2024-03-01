@@ -9,7 +9,14 @@ export const getAPI_KEY = () => {
             return (new Date().getMonth() + 1).toString()
         }
     }
-    const currentDate: string = new Date().getUTCFullYear() + getMonths() + new Date().getUTCDate()
+    const getDay = () => {
+        const day = new Date().getUTCDate()
+        if (day < 10) {
+            return `0${new Date().getUTCDate()}`
+        }
+    }
+    const currentDate: string = new Date().getUTCFullYear() + getMonths() + getDay()
+
     return {
         "X-Auth": md5(`Valantis_${currentDate}`),
         'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
 import {useState} from "react";
 
-
-export const useFetching = (callback:any) => {
+type FetchingReturnType = [() => Promise<void>, boolean, string];
+export const useFetching = (callback:any):FetchingReturnType => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
 
@@ -21,7 +21,7 @@ export const useFetching = (callback:any) => {
 
     }
 
-    return {fetching, isLoading, error}
+    return [fetching, isLoading, error]
 
 
 }
