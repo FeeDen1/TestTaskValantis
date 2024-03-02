@@ -18,6 +18,7 @@ code {
 }
 
 .btn {
+  cursor: pointer;
   margin-top: 7px;
   border: 2px solid;
   padding: 2px;
