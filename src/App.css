@@ -24,3 +24,24 @@
     font-weight: 700;
   }
 }
+
+.error {
+  color: red;
+}
+h2{
+  font-size: 18px;
+}
+.btn {
+  margin-top: 7px;
+  border: 2px solid;
+  padding: 2px;
+  font-size: 15px;
+}
+
+input {
+  padding: 2px;
+  margin-right: 5px;
+  width:200px;
+  font-size: 15px;
+
+}

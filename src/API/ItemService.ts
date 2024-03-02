@@ -7,7 +7,7 @@ import {uniqueIdForStrings} from "../utils/unique_array";
 
 export default class ItemService {
     static async getIDs(params:object = {action: 'get_ids'}):Promise<string[]> {
-        const response = await fetch("http://api.valantis.store:40000/", {
+        const response = await fetch("https://cors-anywhere.herokuapp.com/http://api.valantis.store:40000/", {
             method: 'POST',
             headers: getAPI_KEY(),
             body: JSON.stringify(params),
@@ -16,7 +16,7 @@ export default class ItemService {
         return uniqueIdForStrings(data.result);
     };
     static async getItems(params:object) {
-        const response = await fetch("http://api.valantis.store:40000/", {
+        const response = await fetch("https://cors-anywhere.herokuapp.com/http://api.valantis.store:40000/", {
             method: 'POST',
             headers: getAPI_KEY(),
             body: JSON.stringify(params)
