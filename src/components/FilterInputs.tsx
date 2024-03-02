@@ -30,7 +30,6 @@ const FilterInputs:FC<FilterInputsProps> = ({sortValue,setSortValue,setSortType}
 
             <div>
                 <input
-
                     onChange={event => setSortValue(event.target.value)}
                     type='text'
                     placeholder='Сортировка по брэнду'
@@ -47,7 +46,6 @@ const FilterInputs:FC<FilterInputsProps> = ({sortValue,setSortValue,setSortType}
 
             <div>
                 <input
-
                     onChange={event => setSortValue(parseInt(event.target.value))}
                     type='number'
                     placeholder='Сортировка по цене'
@@ -58,8 +56,6 @@ const FilterInputs:FC<FilterInputsProps> = ({sortValue,setSortValue,setSortType}
                 >
                     Сортировка по цене
                 </button>
-
-
             </div>
         </div>
     );

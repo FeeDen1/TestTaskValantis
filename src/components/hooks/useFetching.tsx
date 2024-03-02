@@ -9,7 +9,6 @@ export const useFetching = (callback:any):FetchingReturnType => {
         try {
             setIsLoading(true)
             setError('')
-
             await callback()
         } catch (error) {
             if (error instanceof Error) {
@@ -18,13 +17,7 @@ export const useFetching = (callback:any):FetchingReturnType => {
             }
         } finally {
             setIsLoading(false)
-
-
         }
-
     }
-
     return [fetching, isLoading, error]
-
-
 }

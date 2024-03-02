@@ -9,7 +9,7 @@ import {useFetching} from "./components/hooks/useFetching";
 import {getPageCount} from "./utils/pages";
 import {createPages} from "./utils/pagesCreators";
 import {IItem} from "./types/IItem";
-import {uniqueIdForStrings, uniqueIdForObjects} from "./utils/unique_array";
+import {uniqueIdForObjects} from "./utils/unique_array";
 import ItemsList from "./components/ItemsList";
 import FilterInputs from "./components/FilterInputs";
 
@@ -29,16 +29,12 @@ function App() {
 
     const [fetchingIds, idsIsLoading, idsError] =
         useFetching(async () => {
-
                 const response = await ItemService.getIDs({
                         action: 'get_ids',
                         params: {brand: sortValue}
                     }
                 )
-
-
                 setData(response)
-
                 let totalCount = getPageCount(response.length, 50)
                 setTotalPageNumber(totalCount)
 
@@ -49,7 +45,6 @@ function App() {
 
     const [fetchingProdInfo, itemIsLoading, itemError] =
         useFetching(async () => {
-
             const responseInfo = await ItemService.getItems({
                     action: 'get_items',
                     params: {
@@ -57,59 +52,43 @@ function App() {
                     }
                 }
             )
-
             setCurrentItems(uniqueIdForObjects(responseInfo.result, (item) => item.id))
-
-
         })
     const [fetchingFilteredIds, filteredIdsLoading, filteredIdsError] =
         useFetching(async () => {
-
                 const response = await ItemService.getIDs({
                         action: 'filter',
                         params: {[sortType]: sortValue}
                     }
                 )
-
-
                 setData(response)
-
                 let totalCount = getPageCount(response.length, 50)
                 setTotalPageNumber(totalCount)
-
-
             }
         )
 
 
     useEffect(() => {
-
         fetchingIds()
-
-
     }, []);
 
 
     useMemo(() => {
         if (data.length > 0) {
             fetchingProdInfo()
-
         }
     }, [data, currentPage])
 
     useMemo(() => {
         if (sortValue && sortType) {
             fetchingFilteredIds()
-
         }
         setSortType('')
     }, [sortType]);
 
 
     return (
-
         <div className="App">
-
             {idsIsLoading || itemIsLoading
                 ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 30}}><Loader/></div>
                 :
@@ -135,7 +114,7 @@ function App() {
                         <div>
 
                             <FilterInputs sortValue={sortValue} setSortValue={setSortValue} setSortType={setSortType}/>
-                            <h1 style={{textAlign:'center'}}>Список товаров</h1>
+                            <h1 style={{textAlign: 'center'}}>Список товаров</h1>
                             <ItemsList items={currentItems}/>
                             <div className='pages'>
                                 {pages.length !== 1 && pages.map((index) =>
@@ -149,14 +128,8 @@ function App() {
                                 )}
                             </div>
                         </div>
-
-
             }
-
-
         </div>
-
-
     );
 }
 

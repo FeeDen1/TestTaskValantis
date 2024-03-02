@@ -9,7 +9,6 @@ const ItemsList:FC<ItemsListProps> = (items) => {
     return (
         <div>
             {items.items.map((item,index) =>
-
                 <ItemSingle key={item.id} item={item} index={index + 1}/>
             )}
         </div>
