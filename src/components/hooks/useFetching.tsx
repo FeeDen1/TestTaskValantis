@@ -8,14 +8,17 @@ export const useFetching = (callback:any):FetchingReturnType => {
     const fetching = async () => {
         try {
             setIsLoading(true)
+            setError('')
 
             await callback()
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message)
+                console.log(error.message)
             }
         } finally {
             setIsLoading(false)
+
 
         }
 

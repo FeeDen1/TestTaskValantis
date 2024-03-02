@@ -4,7 +4,6 @@ import './App.css';
 
 
 import ItemService from "./API/ItemService";
-import ItemSingle from "./components/ItemSingle";
 import Loader from "./UI/Loader/Loader";
 import {useFetching} from "./components/hooks/useFetching";
 import {getPageCount} from "./utils/pages";
@@ -12,7 +11,7 @@ import {createPages} from "./utils/pagesCreators";
 import {IItem} from "./types/IItem";
 import {uniqueIdForStrings, uniqueIdForObjects} from "./utils/unique_array";
 import ItemsList from "./components/ItemsList";
-import {getAPI_KEY} from "./utils/API_KEY";
+import FilterInputs from "./components/FilterInputs";
 
 
 function App() {
@@ -21,16 +20,19 @@ function App() {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [currentItems, setCurrentItems] = useState<IItem[]>([])
     const pages: number[] = []
+    const [sortValue, setSortValue] = useState<string | number>('')
+    const [sortType, setSortType] = useState<string>('')
 
 
     createPages(pages, totalPageNumber, currentPage)
 
 
-    const [fetchingAllIds, idsIsLoading, idsError] =
+    const [fetchingIds, idsIsLoading, idsError] =
         useFetching(async () => {
 
                 const response = await ItemService.getIDs({
                         action: 'get_ids',
+                        params: {brand: sortValue}
                     }
                 )
 
@@ -41,9 +43,9 @@ function App() {
                 setTotalPageNumber(totalCount)
 
 
-
             }
         )
+
 
     const [fetchingProdInfo, itemIsLoading, itemError] =
         useFetching(async () => {
@@ -60,51 +62,101 @@ function App() {
 
 
         })
+    const [fetchingFilteredIds, filteredIdsLoading, filteredIdsError] =
+        useFetching(async () => {
+
+                const response = await ItemService.getIDs({
+                        action: 'filter',
+                        params: {[sortType]: sortValue}
+                    }
+                )
+
+
+                setData(response)
+
+                let totalCount = getPageCount(response.length, 50)
+                setTotalPageNumber(totalCount)
+
+
+            }
+        )
 
 
     useEffect(() => {
-        fetchingAllIds()
+
+        fetchingIds()
+
+
     }, []);
 
 
     useMemo(() => {
         if (data.length > 0) {
             fetchingProdInfo()
+
         }
     }, [data, currentPage])
+
+    useMemo(() => {
+        if (sortValue && sortType) {
+            fetchingFilteredIds()
+
+        }
+        setSortType('')
+    }, [sortType]);
 
 
     return (
 
         <div className="App">
 
-
-            {idsError && <h1 style={{color: 'red', textAlign: 'center'}}>Произошла ошибка!</h1>}
-
-
             {idsIsLoading || itemIsLoading
                 ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 30}}><Loader/></div>
                 :
-                <div>
-                    <ItemsList items={currentItems}/>
-                    <div className='pages'>
-                        {pages.length !== 1 && pages.map((index) =>
-                            <span
-                                key={index}
-                                className={currentPage === index ? "current-page" : "page"}
-                                onClick={() => setCurrentPage(index)}
-                            >
+                (idsError || filteredIdsError)
+                    ?
+                    <div style={{textAlign: 'center'}}>
+                        <h1 className='error'>Произошла ошибка!</h1>
+                        <button className='btn' onClick={fetchingIds}>
+                            Повторить запрос
+                        </button>
+                    </div>
+                    :
+                    itemError
+                        ?
+
+                        <div style={{textAlign: 'center'}}>
+                            <h1 className='error'>Произошла ошибка с загрузкой страницы!</h1>
+                            <button className='btn' onClick={fetchingProdInfo}>
+                                Повторить запрос
+                            </button>
+                        </div>
+                        :
+                        <div>
+
+                            <FilterInputs sortValue={sortValue} setSortValue={setSortValue} setSortType={setSortType}/>
+                            <h1 style={{textAlign:'center'}}>Список товаров</h1>
+                            <ItemsList items={currentItems}/>
+                            <div className='pages'>
+                                {pages.length !== 1 && pages.map((index) =>
+                                        <span
+                                            key={index}
+                                            className={currentPage === index ? "current-page" : "page"}
+                                            onClick={() => setCurrentPage(index)}
+                                        >
                                     {index}
                             </span>
-                        )}
-                    </div>
-                </div>
+                                )}
+                            </div>
+                        </div>
 
 
             }
 
 
         </div>
+
+
     );
 }
 

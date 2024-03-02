@@ -6,7 +6,7 @@ import {IItem} from "../types/IItem";
 
 
 export default class ItemService {
-    static async getIDs(params:object = {action: 'get_ids'}):Promise<(string)[]> {
+    static async getIDs(params:object = {action: 'get_ids'}):Promise<string[]> {
 
         const response = await fetch("http://api.valantis.store:40000/", {
             method: 'POST',
@@ -28,5 +28,6 @@ export default class ItemService {
 
         return idInfo;
 
-    }
+    };
+
 }
