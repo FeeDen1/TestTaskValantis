@@ -31,7 +31,7 @@ function App() {
         useFetching(async () => {
                 const response = await ItemService.getIDs({
                         action: 'get_ids',
-                        params: {brand: sortValue}
+
                     }
                 )
                 setData(response)
