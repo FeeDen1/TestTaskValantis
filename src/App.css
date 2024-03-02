@@ -24,3 +24,24 @@
     font-weight: 700;
   }
 }
+
+
+.error {
+  color: red;
+}
+
+.btn {
+  cursor: pointer;
+  margin-top: 7px;
+  border: 2px solid;
+  padding: 2px;
+  font-size: 20px;
+}
+
+input {
+  padding: 2px;
+  margin-right: 5px;
+  width:300px;
+  font-size: 20px;
+
+}
